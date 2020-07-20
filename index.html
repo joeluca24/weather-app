@@ -28,18 +28,37 @@
 </head>
 
 <body>
-    <section class="container">
-<h1>The Weather App</h1>
-<form id="weather-form">
-    <div class="form-group">
-    <label for="weather-input">Enter city name here:</label>
-    <input type="text" class="form-control" id="weather-input">
+    <h1>The Weather App</h1>
 
-    <!-- Button triggers new movie to be added -->
-    <input id="add-city" type="submit" value="Add a city name">
-</form>
+    <section class="container">
+
+        <div class="row">
+            <div class="col col-md-3">
+                <form id="weather-form">
+                    <div class="form-group">
+                        <label for="weather-input">Enter city name here:</label>
+                        <input type="text" class="form-control" id="weather-input">
+
+                        <!-- Button triggers new movie to be added -->
+                        <input id="add-city" type="submit" value="Add a city name">
+                </form>
+                <div id="buttons-view"></div>
+
+            </div>
+            <div class=" col col-md-9">
+
+                <div class="card" id="weather-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </body>
-   
+
 
 </html>
