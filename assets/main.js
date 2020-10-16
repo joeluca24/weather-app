@@ -3,21 +3,50 @@ var apiKey =  "b13e7f862d63d200aeb5250822646333";
 var cities = ["los angeles"];
 
 function display(city){
+  console.log(city)
     $.ajax({
-        url: `http://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&q=${city}`,
+        url: `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&q=${city}`,
         method: "GET"
       }).then(function(response) {
+        window.response = response;
         console.log(response);
-        var cardTag = $('#weather-card');
-        var cardBody = $('<div>').addClass('card-body')
-        var cardTitle = $("<h3>").addClass('card-title')
-        var cardText = $("<p>").addClass('card-body')
-        cardText.html(Math.round((( response.main.temp -273.15) * 9/5 + 32) * 100) / 100 + "&deg; F")
-        cardTitle.text(response.name)
-        cardTag.empty();
-        cardTag.append(cardBody.append(cardTitle, cardText))
+        var lat = response.coord.lat;
+        var lon = response.coord.lon;
+        $.ajax({
+          url: `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`,
+          method: "GET"
+        }).then(function(uvdata) {
+          window.uvdata = uvdata;
+          console.log(uvdata);
+          createCard(response, uvdata);
+        });
       })
 
+}
+function createCard(response, uvdata){
+  var cardTag = $('#weather-card');
+  var cardBody = $('<div>').addClass('card-body')
+  var cardTitle = $("<h3>").addClass('card-title')
+  var cardText = $("<p>").addClass('card-body')
+  cardText.html(Math.round((( response.main.temp -273.15) * 9/5 + 32) * 100) / 100 + "&deg; F")
+  var cardText4 = $("<p>").addClass('card-body');
+  cardText4.html("wind speed: " + response.wind.speed + "m/s")
+  response.weather[0].description
+  var cardText5 = $("<p>").addClass('card-body');
+  cardText5.html("conditions: " + response.weather[0].description );
+  var cardText5 = $("<p>").addClass('card-body');
+  cardText5.html("conditions: " + response.weather[0].description );
+  
+
+  var cardText2 = $("<p>").addClass('card-body');
+  cardText2.html("humidity: " + response.main.humidity)
+  var cardText3 = $("<p>").addClass('card-body');
+  var date = new Date (response.dt * 1000);
+  cardText3.html("date: " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + (date.getYear() + 1900));
+
+  cardTitle.text(response.name)
+  cardTag.empty();
+  cardTag.append(cardBody.append(cardTitle, cardText, cardText2,cardText3,cardText4,cardText5))
 }
 
  // Function for displaying movie data
@@ -47,24 +76,7 @@ function display(city){
       $("#buttons-view").append(a);
     }
   }
-// display(cities[0]);
-// var queryUrl = `http://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&q=`
-// // This function will let the user search city weather
-// function search(city){
-//     console.log(city)
-//     var url = (queryUrl+city)
-//     console.log(url)
-//    $.ajax({
-//        url:url,
-//        method: "GET"
 
-
-//    }).then(function(response){
-//        console.log(response)
-//    })
-// } 
-
-// search("brick")
 function handleFormClick(event){
     event.preventDefault();
 
@@ -88,3 +100,4 @@ function handleCityClick(event){
 $('#add-city').on("click", handleFormClick);
 $(document).on('click', '.city', handleCityClick)
 renderButtons();
+display("brick")
